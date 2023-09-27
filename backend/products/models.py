@@ -33,7 +33,7 @@ class Stores(models.Model):
     st_is_active = models.BooleanField('Флаг активного магазина')
 
     def __str__(self):
-        return f'{self.st_id}'
+        return self.st_id
 
     class Meta:
         verbose_name = 'Магазин'
@@ -79,7 +79,7 @@ class Product(models.Model):
     pr_promo_sales_in_rub = models.FloatField('Продажи с промо в РУБ')
 
     def __str__(self):
-        return f'{self.pr_sku_id}'
+        return self.pr_sku_id
 
     class Meta:
         verbose_name = 'Товар'
