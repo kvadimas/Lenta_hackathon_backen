@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Product, Stores, SalesForecast
+from products.models import Product, SalesForecast, Stores
 
 
 @admin.register(Product)

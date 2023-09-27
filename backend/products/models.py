@@ -35,7 +35,6 @@ class Stores(models.Model):
     def __str__(self):
         return f'{self.st_id}'
 
-
     class Meta:
         verbose_name = 'Магазин'
         verbose_name_plural = 'Магазины'
@@ -69,8 +68,9 @@ class Product(models.Model):
     )
     st_id = models.ForeignKey(
         Stores,
-        on_delete=models.CASCADE
-    ) # Или поставить SET_NULL?
+        null=True,
+        on_delete=models.SET_NULL
+    )
     date = models.DateField('Дата')
     pr_sales_type_id = models.BooleanField('Промо')
     pr_sales_in_units = models.FloatField('Продажи без промо в шт.')
@@ -89,9 +89,10 @@ class Product(models.Model):
 class SalesForecast(models.Model):
     st_id = models.ForeignKey(
         Stores,
-        on_delete=models.CASCADE
-    ) # Или поставить SET_NULL?
-    pr_sku_id =models.ForeignKey(
+        null=True,
+        on_delete=models.SET_NULL
+    )
+    pr_sku_id = models.ForeignKey(
         Product,
         on_delete=models.CASCADE
     )
@@ -102,4 +103,5 @@ class SalesForecast(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Спрос'
         verbose_name_plural = 'Спрос'
