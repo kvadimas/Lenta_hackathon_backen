@@ -19,6 +19,8 @@ class Command(BaseCommand):
             if _name == 'SalesData':
                 records = []
                 for i in dict_reader:
+                    count_row += 1
+                    bar.next()
                     record = _model(
                         st_id=Stores.objects.get_or_create(
                             st_id=i['st_id']
@@ -34,13 +36,13 @@ class Command(BaseCommand):
                         pr_promo_sales_in_rub=i['pr_promo_sales_in_rub']
                     )
                     records.append(record)
-                    count_row += 1
-                    bar.next()
                 _model.objects.bulk_create(records)
                 bar.finish()
                 return count_row
 
             if _name == 'SalesForecast':
+                count_row += 1
+                bar.next()
                 records = []
                 for i in dict_reader:
                     record = _model(
@@ -54,8 +56,6 @@ class Command(BaseCommand):
                         target=i['target']
                     )
                     records.append(record)
-                    count_row += 1
-                    bar.next()
                 _model.objects.bulk_create(records)
                 bar.finish()
                 return count_row
@@ -65,8 +65,8 @@ class Command(BaseCommand):
                 count_row += 1
                 _model.objects.get_or_create(**i)
                 bar.next()
-        bar.finish()
-        return count_row
+            bar.finish()
+            return count_row
 
     def add_arguments(self, parser):
         '''Использование опционального не обязательного аргумента'''
@@ -115,18 +115,23 @@ class Command(BaseCommand):
             count_row = 0
 
             # Запись
-            #try:
-            self.write_to_database(link, _model, count_row, _name)
-            elapsed_time = timeit.default_timer() - start_time
-            print(f'Время выполнения: {elapsed_time:.2f} секунд')
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f'Добавлено {count_row} записей в таблицу {_name}.'
+            try:
+                count_row = self.write_to_database(
+                    link,
+                    _model,
+                    count_row,
+                    _name
                 )
-            )
-            #except:
-            #    self.stdout.write(
-            #        self.style.ERROR(
-            #            f'Ошибка при добавлении записей в таблицу {_name}.'
-            #        )
-            #    )
+                elapsed_time = timeit.default_timer() - start_time
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f'Добавлено {count_row} записей в таблицу {_name}.\n'
+                        f'Время выполнения: {elapsed_time:.2f} секунд.\n'
+                    )
+                )
+            except:
+                self.stdout.write(
+                    self.style.ERROR(
+                        f'Ошибка при добавлении записей в таблицу {_name}.\n'
+                    )
+                )
