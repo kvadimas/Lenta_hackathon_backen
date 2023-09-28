@@ -1,12 +1,72 @@
 import csv
+import timeit
 
 from django.apps import apps
 from django.core.management.base import BaseCommand
 from progress.bar import IncrementalBar
 
+from products.models import Categories, Stores
+
 
 class Command(BaseCommand):
     help = 'Импонтировать данные из csv'
+
+    def write_to_database(self, link, _model, count_row, _name):
+        bar = IncrementalBar('Processing', max=20)
+        with open(link, encoding='utf-8') as csvfile:
+            dict_reader = csv.DictReader(csvfile)
+
+            if _name == 'SalesData':
+                records = []
+                for i in dict_reader:
+                    record = _model(
+                        st_id=Stores.objects.get_or_create(
+                            st_id=i['st_id']
+                        )[0],
+                        pr_sku_id=Categories.objects.get_or_create(
+                            pr_sku_id=i['pr_sku_id']
+                        )[0],
+                        date=i['date'],
+                        pr_sales_type_id=i['pr_sales_type_id'],
+                        pr_sales_in_units=i['pr_sales_in_units'],
+                        pr_promo_sales_in_units=i['pr_promo_sales_in_units'],
+                        pr_sales_in_rub=i['pr_sales_in_rub'],
+                        pr_promo_sales_in_rub=i['pr_promo_sales_in_rub']
+                    )
+                    records.append(record)
+                    count_row += 1
+                    bar.next()
+                _model.objects.bulk_create(records)
+                bar.finish()
+                return count_row
+
+            if _name == 'SalesForecast':
+                records = []
+                for i in dict_reader:
+                    record = _model(
+                        st_id=Stores.objects.get_or_create(
+                            st_id=i['st_id']
+                        )[0],
+                        pr_sku_id=Categories.objects.get_or_create(
+                            pr_sku_id=i['pr_sku_id']
+                        )[0],
+                        date=i['date'],
+                        target=i['target']
+                    )
+                    records.append(record)
+                    count_row += 1
+                    bar.next()
+                _model.objects.bulk_create(records)
+                bar.finish()
+                return count_row
+
+            # Остальные случаи
+            for i in dict_reader:
+                count_row += 1
+                _model.objects.get_or_create(**i)
+                bar.next()
+        bar.finish()
+        return count_row
 
     def add_arguments(self, parser):
         '''Использование опционального не обязательного аргумента'''
@@ -21,13 +81,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         '''Метод импортирующий csv в базу данных'''
-        bar = IncrementalBar('Processing', max=20)
-        models = ['Stores', 'Product']#, 'SalesForecast' 'Product'
+        models = [
+            'Stores',
+            'Categories',
+            'SalesData',
+            'SalesForecast']
         links = [
             'test_data/st_df.csv',
-            ['test_data/st_df.csv','test_data/sales_df_train.csv'],
+            'test_data/pr_df.csv',
+            'test_data/sales_df_train.csv',
             'test_data/sales_submission.csv'
         ]
+        start_time = timeit.default_timer()
         for _name, link in zip(models, links):
             try:
                 _model = apps.get_model('products', _name)
@@ -45,32 +110,23 @@ class Command(BaseCommand):
                         f'Таблица {_name} очищена от старых записей.'
                     )
                 )
-                bar.next
 
             # Подсчет добавляемых строк
             count_row = 0
 
             # Запись
-            if _name == 'Product':
-                with open(link[0], encoding='utf-8') as csvfile0:
-                    dict_reader0 = csv.DictReader(csvfile0)
-                    with open(link[1], encoding='utf-8') as csvfile1:
-                        dict_reader1 = csv.DictReader(csvfile1)
-                        dict0 = [i for i in dict_reader0]
-                        dict1 = [j for j in dict_reader1]
-                        print(dict0)
-                continue
-
-
-            with open(link, encoding='utf-8') as csvfile:
-                dict_reader = csv.DictReader(csvfile)
-                for i in dict_reader:
-                    count_row += 1
-                    _model.objects.get_or_create(**i)
-                    bar.next
-                self.stdout.write(
-                    self.style.SUCCESS(
-                        f'Добавлено {count_row} записей в таблицу {_name}.'
-                    )
+            #try:
+            self.write_to_database(link, _model, count_row, _name)
+            elapsed_time = timeit.default_timer() - start_time
+            print(f'Время выполнения: {elapsed_time:.2f} секунд')
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f'Добавлено {count_row} записей в таблицу {_name}.'
                 )
-            bar.finish()
+            )
+            #except:
+            #    self.stdout.write(
+            #        self.style.ERROR(
+            #            f'Ошибка при добавлении записей в таблицу {_name}.'
+            #        )
+            #    )

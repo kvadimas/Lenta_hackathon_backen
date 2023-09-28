@@ -11,28 +11,23 @@ class Stores(models.Model):
     st_city_id = models.CharField(
         'id города',
         max_length=50,
-        unique=True,
         null=True
     )
     st_division_code = models.CharField(
         'id дивизиона',
         max_length=50,
-        unique=True,
         null=True
     )
     st_type_format_id = models.IntegerField(
         'id формата магазина',
-        unique=True,
         null=True
     )
     st_type_loc_id = models.IntegerField(
         'id тип локации/окружения магазина',
-        unique=True,
         null=True
     )
     st_type_size_id = models.IntegerField(
         'id типа размера магазина',
-        unique=True,
         null=True
     )
     st_is_active = models.BooleanField('Флаг активного магазина', null=True)
@@ -55,24 +50,20 @@ class Categories(models.Model):
     pr_group_id = models.CharField(
         'Группа товара',
         max_length=50,
-        unique=True,
         null=True
     )
     pr_cat_id = models.CharField(
         'Категория товара',
         max_length=50,
-        unique=True,
         null=True
     )
     pr_subcat_id = models.CharField(
         'Подкатегория товара',
         max_length=50,
-        unique=True,
         null=True
     )
     pr_uom_id = models.IntegerField(
         'Маркер',
-        unique=True,
         null=True
     )
 
