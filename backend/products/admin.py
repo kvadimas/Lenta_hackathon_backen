@@ -1,16 +1,24 @@
 from django.contrib import admin
 
-from products.models import Product, SalesForecast, Stores
+from products.models import Categories, SalesData, SalesForecast, Stores
 
 
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+@admin.register(Categories)
+class CategoriesAdmin(admin.ModelAdmin):
     list_display = (
         'pr_sku_id',
         'pr_group_id',
         'pr_cat_id',
         'pr_subcat_id',
         'pr_uom_id',
+    )
+    list_filter = ('pr_group_id', 'pr_cat_id', 'pr_subcat_id')
+
+
+@admin.register(SalesData)
+class SalesDataAdmin(admin.ModelAdmin):
+    list_display = (
+        'pr_sku_id',
         'st_id',
         'date',
         'pr_sales_type_id',
@@ -19,7 +27,7 @@ class ProductAdmin(admin.ModelAdmin):
         'pr_sales_in_rub',
         'pr_promo_sales_in_rub'
     )
-    list_filter = ('pr_group_id', 'pr_cat_id', 'pr_subcat_id', 'date')
+    list_filter = ('date',)
 
 
 @admin.register(Stores)
