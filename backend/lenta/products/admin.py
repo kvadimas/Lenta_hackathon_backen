@@ -12,7 +12,7 @@ class CategoriesAdmin(admin.ModelAdmin):
         'pr_subcat_id',
         'pr_uom_id',
     )
-    list_filter = ('pr_group_id', 'pr_cat_id', 'pr_subcat_id')
+    list_filter = ('pr_group_id',)
 
 
 @admin.register(SalesData)
@@ -41,10 +41,7 @@ class StoresAdmin(admin.ModelAdmin):
         'st_type_size_id',
         'st_is_active',
     )
-    list_filter = (
-        'st_city_id',
-        'st_division_code',
-    )
+    list_filter = ('st_city_id',)
 
 
 @admin.register(SalesForecast)
@@ -55,7 +52,4 @@ class SalesForecastAdmin(admin.ModelAdmin):
         'date',
         'target',
     )
-    list_filter = (
-        'st_id',
-        'pr_sku_id',
-    )
+    list_filter = ('st_id',)
