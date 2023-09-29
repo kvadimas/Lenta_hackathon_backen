@@ -12,11 +12,11 @@ class Command(BaseCommand):
     help = 'Импонтировать данные из csv'
 
     def write_to_database(self, link, _model, count_row, _name):
-        bar = IncrementalBar('Processing', max=20)
         with open(link, encoding='utf-8') as csvfile:
             dict_reader = csv.DictReader(csvfile)
 
             if _name == 'SalesData':
+                bar = IncrementalBar('Processing', max=883015)
                 records = []
                 for i in dict_reader:
                     count_row += 1
@@ -40,6 +40,7 @@ class Command(BaseCommand):
                 bar.finish()
                 return count_row
 
+            bar = IncrementalBar('Processing', max=1000)
             if _name == 'SalesForecast':
                 count_row += 1
                 bar.next()
