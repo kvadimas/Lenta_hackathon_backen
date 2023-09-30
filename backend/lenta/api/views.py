@@ -16,10 +16,10 @@ class CategoriesViewSet(viewsets.ModelViewSet):
 
 
 class SalesDataViewSet(viewsets.ModelViewSet):
-    queryset = SalesData.objects.all()
+    queryset = SalesData.objects.select_related('pr_sku_id', 'st_id').all()
     serializer_class = SalesDataSerializer
 
 
 class SalesForecastViewSet(viewsets.ModelViewSet):
-    queryset = SalesForecast.objects.all()
+    queryset = SalesForecast.objects.select_related('pr_sku_id', 'st_id').all()
     serializer_class = SalesForecastSerializer
