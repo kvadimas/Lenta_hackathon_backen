@@ -2,7 +2,8 @@ from datetime import datetime
 
 from rest_framework.serializers import ModelSerializer, ValidationError
 
-from products.models import Stores, Categories, SalesData, SalesForecast
+from products.models import (Stores as Shopes, Categories, SalesData as Sales,
+                             SalesForecast as Forecast)
 
 
 class CastomSerializer(ModelSerializer):
@@ -34,9 +35,9 @@ class CastomSerializer(ModelSerializer):
         return value
 
 
-class StoresSerializer(CastomSerializer):
+class ShopesSerializer(CastomSerializer):
     class Meta:
-        model = Stores
+        model = Shopes
         fields = '__all__'
 
     def validate_st_id(self, value):
@@ -101,24 +102,24 @@ class CategoriesSerializer(CastomSerializer):
         return self.validate_type('маркер', value, int)
 
 
-class SalesDataSerializer(CastomSerializer):
+class SalesSerializer(CastomSerializer):
     class Meta:
-        model = SalesData
+        model = Sales
         fields = '__all__'
 
     def validate_pr_sku_id(self, value):
         n = None
         if not (self.Meta.model.objects.filter(pr_sku_id=value).exists() or n):
-                raise ValidationError(
-                    f'{value} не id товара.'
-                )
+            raise ValidationError(
+                f'{value} не id товара.'
+            )
         return value
 
     def validate_st_id(self, value):
         if not (self.Meta.model.objects.filter(st_id=value).exists() or None):
-                raise ValidationError(
-                    f'{value} не id магазина.'
-                )
+            raise ValidationError(
+                f'{value} не id магазина.'
+            )
         return value
 
     def validate_pr_sales_type_id(self, value):
@@ -137,23 +138,23 @@ class SalesDataSerializer(CastomSerializer):
         return self.validate_type('pr_promo_sales_in_rub', value, float)
 
 
-class SalesForecastSerializer(CastomSerializer):
+class ForecastSerializer(CastomSerializer):
     class Meta:
-        model = SalesForecast
+        model = Forecast
         fields = '__all__'
 
     def validate_st_id(self, value):
         if not (self.Meta.model.objects.filter(st_id=value).exists() or None):
-                raise ValidationError(
-                    f'{value} не id магазина.'
-                )
+            raise ValidationError(
+                f'{value} не id магазина.'
+            )
         return value
 
     def validate_pr_sku_id(self, value):
         if not (self.Meta.model.objects.filter(pr_sku_id=value).exists()):
-                raise ValidationError(
-                    f'{value} не id товара.'
-                )
+            raise ValidationError(
+                f'{value} не id товара.'
+            )
         return value
 
     def validate_target(self, value):
