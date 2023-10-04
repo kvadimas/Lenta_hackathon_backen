@@ -27,7 +27,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: 3.11
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -40,7 +40,7 @@ jobs:
         DB_HOST: 127.0.0.1
         DB_PORT: 5432
       run: |
-        cd backend/
+        cd backend/lenta/
         python manage.py test
 
   build_backend_and_push_to_docker_hub:
