@@ -12,14 +12,6 @@ services:
   backend:
     image: kvadimas/lenta_backend:latest
     restart: always
-    command:
-      - /bin/sh
-      - -c
-      - |
-        sleep 10
-        python manage.py migrate
-        python manage.py collectstatic --noinput
-        python manage.py import_holiday --delite
     env_file:
       - .env
     expose:
