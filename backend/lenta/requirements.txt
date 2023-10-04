@@ -11,3 +11,4 @@ drf-spectacular-sidecar
 black==23.7.0
 ruff==0.0.285
 psycopg2-binary==2.9.6
+openpyxl==3.1.2
