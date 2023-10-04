@@ -52,8 +52,17 @@ class SalesForecast(models.Model):
     st_id = models.ForeignKey(Stores, null=True, on_delete=models.SET_NULL)
     pr_sku_id = models.ForeignKey(Categories, on_delete=models.CASCADE)
     date = models.DateField("Дата")
-    target = models.IntegerField("Спрос в шт", default=0)
+    target = models.PositiveIntegerField("Спрос в шт", default=0)
 
     class Meta:
         verbose_name = "Спрос"
         verbose_name_plural = "Спрос"
+
+
+class Holiday(models.Model):
+    date = models.DateField("Дата")
+    holiday = models.BooleanField("holiday", null=True)
+
+    class Meta:
+        verbose_name = "holiday"
+        verbose_name_plural = "holiday"

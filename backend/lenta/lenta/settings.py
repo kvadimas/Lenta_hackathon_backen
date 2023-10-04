@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "djoser",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    "django_filters",
     "api.apps.ApiConfig",
     "users.apps.UsersConfig",
     "products.apps.ProductsConfig",
@@ -38,6 +39,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
 }
 
 DJOSER = {
@@ -85,23 +87,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "lenta.wsgi.application"
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 DATABASES = {
     "default": {
-        "ENGINE": os.getenv("DB_ENGINE", default="django.db.backends.postgresql"),
-        "NAME": os.getenv("DB_NAME", default="postgres"),
-        "USER": os.getenv("POSTGRES_USER", default="postgres"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="postgres"),
-        "HOST": os.getenv("DB_HOST", default="db"),
-        "PORT": os.getenv("DB_PORT", "5432"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+#DATABASES = {
+#    "default": {
+#        "ENGINE": os.getenv("DB_ENGINE", default="django.db.backends.postgresql"),
+#        "NAME": os.getenv("DB_NAME", default="postgres"),
+#        "USER": os.getenv("POSTGRES_USER", default="postgres"),
+#        "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="postgres"),
+#        "HOST": os.getenv("DB_HOST", default="db"),
+#        "PORT": os.getenv("DB_PORT", "5432"),
+#    }
+#}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
