@@ -109,14 +109,14 @@ class Command(BaseCommand):
             count_row = 0
 
             # Запись
-            #try:
-            count_row = self.write_to_database(link, _model, count_row, _name)
-            elapsed_time = timeit.default_timer() - start_time
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f"Добавлено {count_row} записей в таблицу {_name}.\n"
-                    f"Время выполнения: {elapsed_time:.2f} секунд.\n"
+            try:
+                count_row = self.write_to_database(link, _model, count_row, _name)
+                elapsed_time = timeit.default_timer() - start_time
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"Добавлено {count_row} записей в таблицу {_name}.\n"
+                        f"Время выполнения: {elapsed_time:.2f} секунд.\n"
+                    )
                 )
-            )
-            #except Exception:
-            #    self.stdout.write(self.style.ERROR(f"Ошибка при добавлении записей в таблицу {_name}.\n"))
+            except Exception:
+                self.stdout.write(self.style.ERROR(f"Ошибка при добавлении записей в таблицу {_name}.\n"))

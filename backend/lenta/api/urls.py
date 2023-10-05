@@ -12,7 +12,6 @@ router.register(r"categories", CategoriesViewSet)
 router.register(r"sales", SalesViewSet)
 router.register(r"forecast", ForecastViewSet)
 router.register(r"holiday", HolidayViewSet)
-# router.register(r"custom_response", SalesViewSet, basename='custom-response')
 
 urlpatterns = [
     path("v1/", include(router.urls)),
