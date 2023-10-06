@@ -6,10 +6,10 @@ from api.views import ShopesViewSet, CategoriesViewSet, SalesViewSet, ForecastVi
 app_name = "api"
 
 router = DefaultRouter()
-router.register(r"shopes", ShopesViewSet)
-router.register(r"categories", CategoriesViewSet)
-router.register(r"sales", SalesViewSet)
-router.register(r"forecast", ForecastViewSet)
+router.register(r"shopes", ShopesViewSet, basename="shopes")
+router.register(r"categories", CategoriesViewSet, basename="categories")
+router.register(r"sales", SalesViewSet, basename="sales")
+router.register(r"forecast", ForecastViewSet, basename="forecast")
 
 urlpatterns = [
     path("v1/", include(router.urls)),
