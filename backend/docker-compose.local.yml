@@ -9,15 +9,35 @@ services:
     volumes:
       - db_value:/var/lib/postgresql/data/
 
+  prerun:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - /bin/sh
+      - -c
+      - |
+        sleep 10 
+        python manage.py migrate
+        python manage.py collectstatic --noinput
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - static_value:/app/static/.
+
   backend:
-    image: kvadimas/lenta_backend:latest
+    build:
+      context: .
     restart: always
+    command: gunicorn lenta.wsgi:application --bind 0.0.0.0:8000
     env_file:
       - .env
     expose:
       - "8000"
     depends_on:
-      - db
+      - prerun
     container_name: lenta_backend
 
   nginx:

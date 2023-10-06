@@ -18,12 +18,24 @@ class Command(BaseCommand):
             if _name == "SalesData":
                 bar = IncrementalBar("Processing", max=883015)
                 records = []
+                store_ids = {x['st_id']: Stores.objects.get(st_id=x['st_id']) for x in Stores.objects.values('st_id')}
+                category_ids = {x['pr_sku_id']: Categories.objects.get(pr_sku_id=x['pr_sku_id']) for x in Categories.objects.values('pr_sku_id')}
                 for i in dict_reader:
                     count_row += 1
-                    bar.next()
+
+                    store_instance = store_ids.get(i["st_id"])
+                    if not store_instance:
+                        store_instance, _ = Stores.objects.get_or_create(st_id=i["st_id"])
+                        store_ids[i["st_id"]] = store_instance
+
+                    category_instance = category_ids.get(i["pr_sku_id"])
+                    if not category_instance:
+                        category_instance, _ = Categories.objects.get_or_create(pr_sku_id=i["pr_sku_id"])
+                        category_ids[i["pr_sku_id"]] = category_instance
+
                     record = _model(
-                        st_id=Stores.objects.get_or_create(st_id=i["st_id"])[0],
-                        pr_sku_id=Categories.objects.get_or_create(pr_sku_id=i["pr_sku_id"])[0],
+                        st_id=store_instance,
+                        pr_sku_id=category_instance,
                         date=i["date"],
                         pr_sales_type_id=i["pr_sales_type_id"],
                         pr_sales_in_units=i["pr_sales_in_units"],
@@ -32,6 +44,7 @@ class Command(BaseCommand):
                         pr_promo_sales_in_rub=i["pr_promo_sales_in_rub"],
                     )
                     records.append(record)
+                    bar.next()
                 _model.objects.bulk_create(records)
                 bar.finish()
                 return count_row

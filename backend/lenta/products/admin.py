@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Categories, SalesData, SalesForecast, Stores
+from products.models import Categories, SalesData, SalesForecast, Stores, Holiday
 
 
 @admin.register(Categories)
@@ -53,3 +53,11 @@ class SalesForecastAdmin(admin.ModelAdmin):
         "target",
     )
     list_filter = ("st_id",)
+
+
+@admin.register(Holiday)
+class HolidayAdmin(admin.ModelAdmin):
+    list_display = (
+        "date",
+        "holiday",
+    )

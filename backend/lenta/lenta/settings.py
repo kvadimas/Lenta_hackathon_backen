@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "djoser",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    "django_filters",
     "api.apps.ApiConfig",
     "users.apps.UsersConfig",
     "products.apps.ProductsConfig",
@@ -38,6 +39,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
 }
 
 DJOSER = {
