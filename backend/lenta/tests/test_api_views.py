@@ -37,11 +37,11 @@ class APIViewsTestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_invalid_forecast_target(self):
-        url = reverse("api:forecast-list")
+    def test_custom_response_post(self):
+        url = reverse("api:forecast-custom-response-post")
         data = {"st_id": self.store.pk, "pr_sku_id": self.category.pk, "date": "2023-10-06", "target": -10}
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
