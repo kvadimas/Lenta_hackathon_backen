@@ -50,21 +50,22 @@ class Command(BaseCommand):
                 return count_row
 
             bar = IncrementalBar("Processing", max=1000)
-            if _name == "SalesForecast":
-                count_row += 1
-                bar.next()
-                records = []
-                for i in dict_reader:
-                    record = _model(
-                        st_id=Stores.objects.get_or_create(st_id=i["st_id"])[0],
-                        pr_sku_id=Categories.objects.get_or_create(pr_sku_id=i["pr_sku_id"])[0],
-                        date=i["date"],
-                        target=i["target"],
-                    )
-                    records.append(record)
-                _model.objects.bulk_create(records)
-                bar.finish()
-                return count_row
+            # Загрузка таблицы предсказаний, для отладки.
+            # if _name == "SalesForecast":
+            #     count_row += 1
+            #     bar.next()
+            #     records = []
+            #     for i in dict_reader:
+            #         record = _model(
+            #             st_id=Stores.objects.get_or_create(st_id=i["st_id"])[0],
+            #             pr_sku_id=Categories.objects.get_or_create(pr_sku_id=i["pr_sku_id"])[0],
+            #             date=i["date"],
+            #             target=i["target"],
+            #         )
+            #         records.append(record)
+            #     _model.objects.bulk_create(records)
+            #     bar.finish()
+            #     return count_row
 
             # Остальные случаи
             for i in dict_reader:
@@ -87,12 +88,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Метод импортирующий csv в базу данных"""
-        models = ["Stores", "Categories", "SalesData", "SalesForecast"]
+        models = ["Stores", "Categories", "SalesData"]
         links = [
             "test_data/st_df.csv",
             "test_data/pr_df.csv",
             "test_data/sales_df_train.csv",
-            "test_data/sales_submission.csv",
         ]
         start_time = timeit.default_timer()
         for _name, link in zip(models, links):

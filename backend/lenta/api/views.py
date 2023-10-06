@@ -17,7 +17,7 @@ from products.models import Stores, Categories, SalesData, SalesForecast, Holida
 
 
 @extend_schema(tags=["Shopes"])
-class ShopesViewSet(viewsets.ModelViewSet):
+class ShopesViewSet(viewsets.ReadOnlyModelViewSet):
     """Данные по магазинам."""
     queryset = Stores.objects.all()
     serializer_class = ShopesSerializer
@@ -25,7 +25,7 @@ class ShopesViewSet(viewsets.ModelViewSet):
 
 
 @extend_schema(tags=["Categories"])
-class CategoriesViewSet(viewsets.ModelViewSet):
+class CategoriesViewSet(viewsets.ReadOnlyModelViewSet):
     """Данные по товарной иерархии."""
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer
@@ -33,7 +33,7 @@ class CategoriesViewSet(viewsets.ModelViewSet):
 
 
 @extend_schema(tags=["Sales"])
-class SalesViewSet(viewsets.ModelViewSet):
+class SalesViewSet(viewsets.ReadOnlyModelViewSet):
     """Продажи товара с различными параметрами."""
     queryset = SalesData.objects.select_related("pr_sku_id", "st_id").all()
     serializer_class = SalesSerializer
@@ -43,7 +43,7 @@ class SalesViewSet(viewsets.ModelViewSet):
 
 
 @extend_schema(tags=["Forecast"])
-class ForecastViewSet(viewsets.ModelViewSet):
+class ForecastViewSet(viewsets.ReadOnlyModelViewSet):
     """Предсказание продаж для товара и магазина на несколько дней вперед."""
     queryset = SalesForecast.objects.select_related("pr_sku_id", "st_id").all()
     serializer_class = ForecastSerializer
