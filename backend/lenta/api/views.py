@@ -1,8 +1,10 @@
+import json
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
+from django.http import FileResponse
 
 from api.serializers import (
     ShopesSerializer,
@@ -13,6 +15,7 @@ from api.serializers import (
 )
 from api.filters import SalesForecastFilter, SalesDataFilter
 from api.pagination import CustomPagination
+from api.services import get_report
 from products.models import Stores, Categories, SalesData, SalesForecast, Holiday
 
 
@@ -70,3 +73,20 @@ class HolidayViewSet(viewsets.ReadOnlyModelViewSet):
     """Календарь выходных дней для предсказательной модели."""
     queryset = Holiday.objects.all()
     serializer_class = HolidaySerializer
+
+
+@extend_schema(tags=["Download report"])
+def download_excel(request):
+    """Эндпоинт для скачивания файла отчета в формате excel."""
+    if request.method == 'POST':
+        # Получаем данные JSON из тела запроса
+        data = json.loads(request.body)
+
+        excel_file = get_report(data)
+
+        file = "report"
+        response = FileResponse(
+            excel_file,
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response["Content-Disposition"] = f'attachment; filename="{file}.xlsx"'
+        return response

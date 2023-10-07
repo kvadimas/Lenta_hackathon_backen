@@ -2,7 +2,7 @@ from openpyxl import Workbook
 from io import BytesIO
 
 
-def get_report():
+def get_report(data):
     products = [
         ("батон", "пятерочка", 1500, 9.95),
         ("молоко", "лента", 600, 4.95),
