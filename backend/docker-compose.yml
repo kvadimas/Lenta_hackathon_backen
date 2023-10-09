@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:13-alpine
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - db_value:/var/lib/postgresql/data/
+
+  backend:
+    image: kvadimas/lenta_backend:latest
+    restart: always
+    env_file:
+      - .env
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    container_name: lenta_backend
+
+  nginx:
+    image: nginx:1.23-alpine
+    restart: always
+    volumes:
+      - static_value:/usr/share/nginx/html
+      - ./nginx/default.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+
+volumes:
+  db_value:
+  static_value:
