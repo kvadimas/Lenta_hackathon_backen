@@ -17,6 +17,7 @@ from api.filters import SalesForecastFilter, SalesDataFilter
 from api.pagination import CustomPagination
 from api.services import get_report
 from products.models import Stores, Categories, SalesData, SalesForecast, Holiday
+from test_data import temp
 
 
 @extend_schema(tags=["Shopes"])
@@ -75,12 +76,13 @@ class HolidayViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = HolidaySerializer
 
 
-@extend_schema(tags=["Download report"])
+@extend_schema(tags=["Download-report"])
 def download_excel(request):
     """Эндпоинт для скачивания файла отчета в формате excel."""
-    if request.method == 'POST':
+    if request.method == 'GET':
         # Получаем данные JSON из тела запроса
-        data = json.loads(request.body)
+        # Пока на стороне frontend реализация отсутствует- загружается из заглушки
+        data = temp.TEMP_DATA  # json.loads(request.body)
 
         excel_file = get_report(data)
 

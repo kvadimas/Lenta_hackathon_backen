@@ -3,23 +3,15 @@ from io import BytesIO
 
 
 def get_report(data):
-    products = [
-        ("батон", "пятерочка", 1500, 9.95),
-        ("молоко", "лента", 600, 4.95),
-        ("сыр", "дикси", 200, 19.95),
-        ("вода", "7/11", 2000, 49.95),
-    ]
+
     wb = Workbook()
-    list = wb.active
+    ws = wb.active
     # Создание строки с заголовками
-    list.append(("Название", "Магазин", "Количество", "Цена"))
-    for product in products:
-        list.append(product)
+    title = list(data["import"][0].keys())
+    ws.append(title)
+    prod = [tuple(val.values()) for dicts in data["import"] for val in dicts]
+    for line in prod:
+        ws.append(line)
     buffer = BytesIO()
     wb.save(buffer)
     return buffer
-
-
-a = get_report()
-with open("my_report.xlsx", "wb") as f:
-    f.write(a.getvalue())
