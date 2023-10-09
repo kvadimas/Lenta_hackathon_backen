@@ -73,3 +73,5 @@ http://localhost:8000
 [openpyxl](https://openpyxl.readthedocs.io)
 
 [python-dotenv](https://pypi.org/project/python-dotenv/)
+
+[progress](https://pypi.org/project/progress/)
