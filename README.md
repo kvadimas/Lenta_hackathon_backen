@@ -4,9 +4,11 @@
 
 Серверное приложение (API), которое предназначено для работы с данными предсказательной модели через интерфейс пользователя.
 
+Принципиальная схема проекта:
+
 ![Принципиальная схема проекта](https://ltdfoto.ru/images/2023/10/10/Flowchart-Diagram.png "Принципиальная схема проекта.")
 
-<iframe width="560" height="315" src='https://dbdiagram.io/embed/6514af0cffbf5169f0a2a6e1'> </iframe>
+[Схема БД](https://dbdiagram.io/d/Lenta-6514af0cffbf5169f0a2a6e1)
 
 
 ## Сведения о команде
@@ -24,7 +26,11 @@
 
 [Machine Learning](https://github.com/aminaadzhieva/lenta-hackathon-demand-forecasting/)
 
+## Демонстрация
+
 [Демо](http://31.129.111.234/)
+
+[Документация](http://31.129.111.234/api/docs/)
 
 ## Инструкция по сборке и запуску
 
@@ -57,3 +63,13 @@ http://localhost:8000
 3. Pytest
 4. Swagger
 5. Docker
+
+## Использовались библиотеки
+
+[djoser](https://djoser.readthedocs.io/en/latest/getting_started.html)
+
+[drf-spectacular](https://drf-spectacular.readthedocs.io)
+
+[openpyxl](https://openpyxl.readthedocs.io)
+
+[python-dotenv](https://pypi.org/project/python-dotenv/)
