@@ -1,7 +1,0 @@
-openapi: 3.0.3
-info:
-  title: Lenta backend API
-  version: 1.0.0
-  description: Сервис предсказания спроса на товары собственного производства
-paths: {}
-components: {}

@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
+from django.http import FileResponse
+from rest_framework.decorators import api_view
 
 from api.serializers import (
     ShopesSerializer,
@@ -13,7 +15,9 @@ from api.serializers import (
 )
 from api.filters import SalesForecastFilter, SalesDataFilter
 from api.pagination import CustomPagination
+from api.services import get_report
 from products.models import Stores, Categories, SalesData, SalesForecast, Holiday
+from test_data import temp
 
 
 @extend_schema(tags=["Shopes"])
@@ -51,10 +55,10 @@ class ForecastViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = SalesForecastFilter
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=["post"])
     def custom_response_post(self, request):
         """Эндпоинт для загрузки предсказаний от ML контейнера."""
-        received_data = request.data.get('data', [])
+        received_data = request.data.get("data", [])
         serializer = self.get_serializer(data=received_data, many=True)
 
         if serializer.is_valid():
@@ -63,6 +67,22 @@ class ForecastViewSet(viewsets.ReadOnlyModelViewSet):
                              "saved_data": serializer.data}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=["GET"])
+    def download_excel(request):
+        """Эндпоинт для скачивания файла отчета в формате excel. Пока реализован по временной схеме."""
+        # Получаем данные JSON из тела запроса
+        # Пока на стороне frontend реализация отсутствует- загружается из заглушки
+        data = temp.TEMP_DATA  # json.loads(request.body)
+
+        excel_file = get_report(data)
+
+        file = "report"
+        response = FileResponse(
+            excel_file,
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response["Content-Disposition"] = f'attachment; filename="{file}.xlsx"'
+        return response
 
 
 @extend_schema(tags=["Holiday"])
