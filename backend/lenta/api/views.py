@@ -23,7 +23,7 @@ from test_data import temp
 @extend_schema(tags=["Shopes"])
 class ShopesViewSet(viewsets.ReadOnlyModelViewSet):
     """Данные по магазинам."""
-    queryset = Stores.objects.all()
+    queryset = Stores.objects.all().order_by('st_id')
     serializer_class = ShopesSerializer
     pagination_class = CustomPagination
 
@@ -31,7 +31,7 @@ class ShopesViewSet(viewsets.ReadOnlyModelViewSet):
 @extend_schema(tags=["Categories"])
 class CategoriesViewSet(viewsets.ReadOnlyModelViewSet):
     """Данные по товарной иерархии."""
-    queryset = Categories.objects.all()
+    queryset = Categories.objects.all().order_by('pr_sku_id')
     serializer_class = CategoriesSerializer
     pagination_class = CustomPagination
 
@@ -39,7 +39,7 @@ class CategoriesViewSet(viewsets.ReadOnlyModelViewSet):
 @extend_schema(tags=["Sales"])
 class SalesViewSet(viewsets.ReadOnlyModelViewSet):
     """Продажи товара с различными параметрами."""
-    queryset = SalesData.objects.select_related("pr_sku_id", "st_id").all()
+    queryset = SalesData.objects.select_related("pr_sku_id", "st_id").all().order_by('id')
     serializer_class = SalesSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend]
