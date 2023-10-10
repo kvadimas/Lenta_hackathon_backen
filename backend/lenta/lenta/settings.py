@@ -26,12 +26,13 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "django_filters",
+    "django_celery_beat",
     "api.apps.ApiConfig",
-    "users.apps.UsersConfig",
     "products.apps.ProductsConfig",
 ]
 
 REST_FRAMEWORK = {
+    'SCHEMA_GENERATOR_CLASS': 'drf_spectacular.generators.SchemaGenerator',
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",

@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from api.views import (ShopesViewSet, CategoriesViewSet, SalesViewSet,
-                       ForecastViewSet, HolidayViewSet, download_excel)
+                       ForecastViewSet, HolidayViewSet)
 
 app_name = "api"
 
@@ -15,6 +15,5 @@ router.register(r"holiday", HolidayViewSet, basename="holiday")
 
 urlpatterns = [
     path("v1/", include(router.urls)),
-    path("v1/download-excel/", download_excel, name='download-excel'),
     path("v1/auth/", include("djoser.urls.authtoken")),
 ]
