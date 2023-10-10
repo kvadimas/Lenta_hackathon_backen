@@ -75,3 +75,5 @@ http://localhost:8000
 [python-dotenv](https://pypi.org/project/python-dotenv/)
 
 [progress](https://pypi.org/project/progress/)
+
+[django-celery-beat](https://pypi.org/project/django-celery-beat/)
