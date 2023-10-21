@@ -6,7 +6,7 @@
 
 Принципиальная схема проекта:
 
-![Принципиальная схема проекта](https://ltdfoto.ru/images/2023/10/10/Flowchart-Diagram.png "Принципиальная схема проекта.")
+![Принципиальная схема проекта](https://i.ibb.co/dbNcqtk/Flowchart-Diagram.png "Принципиальная схема проекта.")
 
 [Схема БД](https://dbdiagram.io/d/Lenta-6514af0cffbf5169f0a2a6e1)
 
