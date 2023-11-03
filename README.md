@@ -39,7 +39,7 @@
 1. Клонируйте репозиторий с помощью команды:
 
 ```bash
-git clone https:https://github.com/kvadimas/Lenta_hackathon_backend.git
+git clone https://github.com/kvadimas/Lenta_hackathon_backend.git
 ```
 
 2. Перейдите в директорию проекта.
